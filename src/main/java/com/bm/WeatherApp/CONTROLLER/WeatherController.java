@@ -23,15 +23,19 @@ public class WeatherController{
 
 
     @PostMapping("/get/{city}")
-    public WeatherResponse getWeather(@PathVariable String city){
-       WeatherResponse response = (WeatherResponse) redisTemplate.opsForValue().get(city);
-       if (response==null){
-           response = weatherClient.getWeather(city);
-           redisTemplate.opsForValue().set(city,response);
-       }
-        return response;
+    public WeatherResponse getWeather(@PathVariable String city) {
+        try {
+
+            WeatherResponse response = (WeatherResponse) redisTemplate.opsForValue().get(city);
+            if (response == null) {
+                response = weatherClient.getWeather(city);
+                redisTemplate.opsForValue().set(city, response);
+            }
+            return response;
+        } catch (Exception e) {
+            throw new RuntimeException("Error fetching weather data for city: " + city, e);
+        }
+
     }
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.bm.WeatherApp.CONFIGURATION;
 
+import com.bm.WeatherApp.DTOS.WeatherResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -16,7 +17,7 @@ public class RedisConfig {
 
         RedisTemplate<String,Object> template = new RedisTemplate<>();
         template.setKeySerializer(new StringRedisSerializer());
-        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
+        template.setValueSerializer(new Jackson2JsonRedisSerializer<>(WeatherResponse.class));
 
         template.setConnectionFactory(connectionFactory);
         return template;

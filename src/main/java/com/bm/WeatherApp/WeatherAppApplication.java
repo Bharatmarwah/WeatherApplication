@@ -1,4 +1,4 @@
-package com.bm.WeatherApp.DTOS;
+package com.bm.WeatherApp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

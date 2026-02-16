@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WeatherApp</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>WeatherApp</h1>
+      <p class="subtitle">Quick current temperature lookup (cached)</p>
+    </header>
+
+    <section class="card">
+      <div class="controls">
+        <label for="city" class="visually-hidden">City</label>
+        <div class="input-group">
+          <input id="city" type="text" placeholder="Enter city name (e.g. London)" autocomplete="off" />
+          <button id="get" aria-label="Get weather">Get</button>
+        </div>
+        <div class="hint">Press Enter to submit</div>
+      </div>
+
+      <div id="result" class="result" aria-live="polite"></div>
+    </section>
+
+    <footer class="footer">Powered by WeatherAPI</footer>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

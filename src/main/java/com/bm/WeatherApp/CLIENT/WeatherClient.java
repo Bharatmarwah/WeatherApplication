@@ -5,6 +5,7 @@ import com.bm.WeatherApp.DTOS.WeatherApiResponse;
 import com.bm.WeatherApp.DTOS.WeatherResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class WeatherClient {
@@ -33,7 +34,22 @@ public class WeatherClient {
                        .queryParam("aqi", "yes")
                        .build())
                .retrieve()
-               .bodyToMono(WeatherApiResponse.class).block();
+               .onStatus(
+                       status -> status.is4xxClientError(),
+                       clientResponse -> clientResponse
+                               .bodyToMono(String.class)
+                               .flatMap(errorBody ->
+                                       Mono.error(new RuntimeException("Client Error: " + errorBody)))
+               )
+               .onStatus(
+                       status -> status.is5xxServerError(),
+                       clientResponse -> clientResponse
+                               .bodyToMono(String.class)
+                               .flatMap(errorBody ->
+                                       Mono.error(new RuntimeException("Server Error: " + errorBody)))
+               )
+               .bodyToMono(WeatherApiResponse.class)
+               .block();
 
        if (response == null || response.getCurrent() == null) {
            throw new RuntimeException("Failed to fetch weather data for city: " + city);
